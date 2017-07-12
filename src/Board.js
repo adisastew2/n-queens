@@ -79,7 +79,10 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      // access the row
+      // return whether reduces to greater than 1
+      // return false; // fixme
+      return _.reduce(this.get(rowIndex), (acc, item) => acc + item) > 1;
     },
 
     // test if any rows on this board contain conflicts
