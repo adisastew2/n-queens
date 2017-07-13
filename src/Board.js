@@ -113,16 +113,18 @@
       //console.log(this.attributes);
       //get n to specifiy length of for-loop
       var n = this.get('n');
-      var hasConflicts = false;
+      // var hasConflicts = false;
       //iterate up to n
       for (var i = 0; i < n; i++) {
         //call .hasConflictAt for n
         if (this.hasColConflictAt(i)) {
           //if returns true, then return true at end
-          hasConflicts = true;
+          // hasConflicts = true;
+          return true;
         }
       }
-      return hasConflicts; // fixme
+      // return hasConflicts; // fixme
+      return false;
     },
 
 
@@ -131,13 +133,38 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function(element, row, col) {
+      
+      //if row+1 and i+1 exist
+      if (this.attributes[row + 1][col + 1]) {
+        //if this element is a 1, return true
+        if (this.attributes[row + 1][col + 1] === 1) {
+          return true;
+        } else {
+          hasMajorDiagonalConflictAt(this.attributes[row + 1][col + 1], row + 1, col + 1);
+        }        
+      }
+      
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      //iterate all rows
+      debugger;
+      for (var i = 0; i < this.attributes.length; i++) {  
+        //iterate through first row
+        for (var j = 0; j < this.attributes[i].length; j++) {
+          //check every element for a 1
+          //if element is a 1, call hasMajorDiagnonalConflict
+          if (this.attributes[i][j] === 1) {
+            if (hasMajorDiagonalConflictAt(this.attributes[i][j], i, j)) {
+              return true;
+            }
+          }
+        }       
+      } 
+      return false;  
     },
 
 
