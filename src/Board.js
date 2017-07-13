@@ -174,13 +174,41 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow, row, col) {
+      var matrix = this.rows();
+      //if row+1 and i+1 exist
+      //debugger
+      if (matrix[row - 1][col - 1]) {
+        //if this element is a 1, return true
+        if (matrix[row - 1][col - 1] === 1) {
+          return true;
+        } else {
+          hasMinorDiagonalConflictAt(matrix[row - 1][col - 1], row - 1, col - 1);
+        }        
+      }
+      
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      //debugger;
+      var matrix = this.rows();
+      //for-loop
+      //iterate all rows
+      for (var i = 0; i < matrix.length; i++) {  
+        //iterate through first row
+        for (var j = 0; j < matrix[i].length; j++) {
+          //check every element for a 1
+          //if element is a 1, call hasMinorDiagnonalConflict
+          if (matrix[i][j] === 1 && j > 0) {
+            if (this.hasMinorDiagonalConflictAt(matrix[i][j], i, j)) {
+              return true;
+            }
+          }
+        }       
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
