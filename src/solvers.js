@@ -17,9 +17,44 @@
 
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
+  //make an empty matrix
+  var makeNewMatrix = function(n) {
+    return _(_.range(n)).map(function() {
+      return _(_.range(n)).map(function() {
+        return 0;
+      });
+    });
+  };
+  //debugger;
+  var solutionMatrix = makeNewMatrix(n);
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
+  //check rooks placed
+  var rooksPlaced = 0;
+  debugger;
+  if (n === 1) {
+    solutionMatrix = [[1]];
+    rooksPlaced++;
+  } else {
+    //iterate through rows
+    for (var i = 0; i < solutionMatrix.length; i++) {
+      // row i doesn't have a rook
+      var rooksInRow = solutionMatrix[i].reduce( (rooks, square) => rooks + square);
+      if (rooksInRow === 0) {
+        //iterate columns and columns
+        for (var j = 0; j < solutionMatrix[i]; j++) {
+          //if rooks placed is less than n
+          if (rooksPlaced < n) {
+            //place rook in first position matrix[0][0]
+            solutionMatrix[i][j] = 1;
+            rooksPlaced++;
+          }
+        }
+      }
+    }
+  }
+
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solutionMatrix));
+  return solutionMatrix;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
