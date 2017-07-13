@@ -81,13 +81,14 @@
     hasRowConflictAt: function(rowIndex) {
       // access the row
       // return whether reduces to greater than 1
-      // return false; // fixme
-      return _.reduce(this.get(rowIndex), (acc, item) => acc + item) > 1;
+      return _.reduce(this.get(rowIndex), (acc, item) => {
+        return acc + item;
+      }, 0) > 1;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      return _.some(this.attributes, (row, i) => this.hasRowConflictAt(i));
     },
 
 
@@ -97,12 +98,31 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      return _.reduce(this.attributes, (acc, row) => {
+        // debugger;
+        if (Array.isArray(row)) {
+          return acc + row[colIndex];
+        } else {
+          return acc;
+        }
+      }, 0) > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      //console.log(this.attributes);
+      //get n to specifiy length of for-loop
+      var n = this.get('n');
+      var hasConflicts = false;
+      //iterate up to n
+      for (var i = 0; i < n; i++) {
+        //call .hasConflictAt for n
+        if (this.hasColConflictAt(i)) {
+          //if returns true, then return true at end
+          hasConflicts = true;
+        }
+      }
+      return hasConflicts; // fixme
     },
 
 
