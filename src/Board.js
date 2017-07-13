@@ -133,42 +133,32 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function(element, row, col) {
+    hasMajorDiagonalConflictAt: function(majorDiagonColumnIndexAtFirstRow) {
       var matrix = this.rows();
-      //console.log(matrix[row + 1]);
-      //console.log(matrix[row + 1][col + 1]);
       //debugger;
-      row++;
-      col++;
-      if (typeof matrix[row][col] === 'number') {
-        //if this element is a 1, return true
-        if (matrix[row][col] === 1) {
-          return true;
-        } else {
-          this.hasMajorDiagonalConflictAt(matrix[row][col], row, col);
-        }        
+      var row = 0;
+      var col = majorDiagonColumnIndexAtFirstRow;
+      var count = 0;
+      for (var i = 0; i < matrix.length; i++) {
+        if (typeof matrix[row][col] === 'number') {
+          count += matrix[row][col];
+        }
+        row++;
+        col++;
       }
-      
-      return false;
+      return count > 1;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
       //debugger;
       var matrix = this.rows();
-      //for-loop
-      //iterate all rows
-      for (var i = 0; i < matrix.length; i++) {  
+      //iterate from negative row index
+      for (var i = -matrix.length; i < matrix.length; i++) {  
         //iterate through first row
-        for (var j = 0; j < matrix[i].length; j++) {
-          //check every element for a 1
-          //if element is a 1, call hasMajorDiagnonalConflict
-          if (matrix[i][j] === 1) {
-            if (this.hasMajorDiagonalConflictAt(matrix[i][j], i, j)) {
-              return true;
-            }
-          }
-        }       
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }               
       }
       return false;
     },
@@ -178,40 +168,33 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow, row, col) {
+    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var matrix = this.rows();
-      //if row+1 and i+1 exist
-      //console.log(matrix);
-      row++;
-      col--;
-      if (typeof matrix[row][col] === 'number') {
-        //if this element is a 1, return true
-        if (matrix[row][col] === 1) {
-          return true;
-        } else {
-          this.hasMinorDiagonalConflictAt(matrix[row][col], row, col);
-        }        
-      }   
-      return false;
+      var row = 0;
+      var col = minorDiagonalColumnIndexAtFirstRow;
+      var count = 0;
+
+      for (var i = 0; i < matrix.length; i++) {
+        if (typeof matrix[row][col] === 'number') {
+          //if this element is a 1, return true
+          count += matrix[row][col];      
+        }
+        row++;
+        col--;
+      }
+      return count > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       //debugger;
       var matrix = this.rows();
-      //for-loop
-      //iterate all rows
-      for (var i = 0; i < matrix.length; i++) {  
+      //iterate from negative row index
+      for (var i = 0; i < matrix.length * 2; i++) {  
         //iterate through first row
-        for (var j = 0; j < matrix[i].length; j++) {
-          //check every element for a 1
-          //if element is a 1, call hasMinorDiagnonalConflict
-          if (matrix[i][j] === 1 && j > 0) {
-            if (this.hasMinorDiagonalConflictAt(matrix[i][j], i, j)) {
-              return true;
-            }
-          }
-        }       
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }               
       }
       return false;
     }
