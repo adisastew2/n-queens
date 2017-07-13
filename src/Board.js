@@ -135,13 +135,17 @@
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(element, row, col) {
       var matrix = this.rows();
-      //if row+1 and i+1 exist
-      if (matrix[row + 1][col + 1]) {
+      //console.log(matrix[row + 1]);
+      //console.log(matrix[row + 1][col + 1]);
+      //debugger;
+      row++;
+      col++;
+      if (typeof matrix[row][col] === 'number') {
         //if this element is a 1, return true
-        if (matrix[row + 1][col + 1] === 1) {
+        if (matrix[row][col] === 1) {
           return true;
         } else {
-          hasMajorDiagonalConflictAt(matrix[row + 1][col + 1], row + 1, col + 1);
+          this.hasMajorDiagonalConflictAt(matrix[row][col], row, col);
         }        
       }
       
@@ -176,17 +180,18 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow, row, col) {
       var matrix = this.rows();
-      //debugger
       //if row+1 and i+1 exist
       //console.log(matrix);
-      if (matrix[row - 1][col - 1]) {
+      row++;
+      col--;
+      if (typeof matrix[row][col] === 'number') {
         //if this element is a 1, return true
-        if (matrix[row - 1][col - 1] === 1) {
+        if (matrix[row][col] === 1) {
           return true;
         } else {
-          hasMinorDiagonalConflictAt(matrix[row - 1][col - 1], row - 1, col - 1);
+          this.hasMinorDiagonalConflictAt(matrix[row][col], row, col);
         }        
-      }    
+      }   
       return false;
     },
 
